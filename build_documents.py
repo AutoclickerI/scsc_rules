@@ -61,7 +61,7 @@ CSS = r"""
 @page { size: A4; margin: 13mm 14mm 14mm; }
 * { box-sizing: border-box; }
 html { font-family: "Noto Sans CJK KR", "Noto Sans KR", sans-serif; color: #15202b; }
-body { margin: 0; font-size: 9pt; line-height: 1.47; overflow-wrap: anywhere; }
+body { margin: 0; font-size: 9pt; line-height: 1.47; word-break: keep-all; overflow-wrap: break-word; }
 .doc { page-break-after: always; }
 .doc:last-child { page-break-after: auto; }
 .label { color: #64748b; font-size: 7.7pt; letter-spacing: .04em; margin-bottom: 5mm; }
@@ -126,6 +126,12 @@ a { color: inherit; text-decoration: none; }
 .post_enactment p { margin-bottom: 1.8mm; }
 .post_enactment ol, .post_enactment ul { margin: 1mm 0 2mm; }
 .post_enactment li { margin-bottom: .6mm; }
+.rules h3, .A h3, .B h3, .C h3, .D h3, .P1 h3, .P2 h3, .P3 h3, .P4 h3 {
+  font-size: 1em; line-height: 1.25; margin: 1.8mm 0 .5mm;
+}
+.rules p, .A p, .B p, .C p, .D p, .P1 p, .P2 p, .P3 p, .P4 p {
+  margin: 0 0 .45mm;
+}
 """
 
 
