@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 
 import markdown
+from pypdf import PdfReader, PdfWriter
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / ".build" / "pdf"
@@ -140,6 +141,12 @@ def body_for(source: Path, label: str, key: str = "") -> str:
         source.read_text(encoding="utf-8"),
         extensions=["tables", "fenced_code", "sane_lists"],
     )
+    rendered = re.sub(
+        r'<a href="(?!(?:https?://|mailto:|#))[^\"]*">(.*?)</a>',
+        r"\1",
+        rendered,
+        flags=re.S,
+    )
     return f'<section class="doc {key}"><div class="label">{label}</div>{rendered}</section>'
 
 
@@ -168,6 +175,21 @@ def print_pdf(html: Path, pdf: Path) -> None:
         text=True,
         timeout=180,
     )
+    canonical = pdf.with_suffix(".canonical.pdf")
+    reader = PdfReader(pdf)
+    writer = PdfWriter(clone_from=reader)
+    writer.metadata = None
+    writer.add_metadata(
+        {
+            "/Producer": "SCSC deterministic build",
+            "/CreationDate": "D:20260814000000+09'00'",
+            "/ModDate": "D:20260814000000+09'00'",
+        }
+    )
+    writer.generate_file_identifiers()
+    with canonical.open("wb") as handle:
+        writer.write(handle)
+    canonical.replace(pdf)
 
 
 def update_changelog() -> None:
